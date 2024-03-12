@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
-public class BoardNativeRepository {
+public class BoardPersistRepository {
     private final EntityManager em;
 
     @Transactional
@@ -37,13 +37,11 @@ public class BoardNativeRepository {
     }
 
     @Transactional
-    public void save(String title, String content, String username){
-        Query query = em.createNativeQuery("insert into board_tb(title, content, username, created_at) values(?, ?, ?, now())");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.setParameter(3, username);
-
-        query.executeUpdate();
+    public Board save(Board board){
+        // 1. 비영속 객체
+        em.persist(board); // board를 영속화 시키는 부분
+        // 2. board -> 영속 객체
+        return board; // 영속화된 board
     }
 
     @Transactional
