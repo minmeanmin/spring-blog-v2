@@ -1,10 +1,17 @@
 # 스프링부트 블로그 만들기 v2
 
+## 1. 익명블로그 만들기(get, post)
+- 글쓰기
+- 글목록보기
+- 글상세보기
+- 글삭제하기
+- 글수정하기
+
 ## 기술스택
 
 - Springboot 3.2
 - JDK 21
-- 인텔리J
+- IntelliJ
 - H2
 - MySQL8.0
 
@@ -17,9 +24,3 @@
 - h2
 - MySQL
 - Mustache
-- 
-## 프로젝트 시작
-
-```sql
-create database blogdb;
-```
