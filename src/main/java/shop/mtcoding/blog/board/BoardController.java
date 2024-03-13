@@ -3,6 +3,7 @@ package shop.mtcoding.blog.board;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +15,11 @@ import java.util.List;
 public class BoardController {
 
     private final BoardPersistRepository boardPersistRepository;
+    private final BoardNativeRepository boardNativeRepository;
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id, String title, String content, String username){
-        boardPersistRepository.updateById(id, title, content, username);
+    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO requestDTO){
+        boardPersistRepository.updateById(id, requestDTO);
         return "redirect:/board/"+id;
     }
 
@@ -31,7 +33,7 @@ public class BoardController {
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
-        boardPersistRepository.deleteById(id);
+        boardNativeRepository.deleteById(id);
         return "redirect:/";
     }
 
@@ -43,7 +45,7 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardPersistRepository.findAll();
+        List<Board> boardList = boardNativeRepository.findAll();
         request.setAttribute("boardList", boardList); // request 가방을 들고 간다.
         return "index";
     }

@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BoardNativeRepositoryTest {
 
     @Autowired // IOC에 있는걸 DI 해주는 역할
-    private BoardPersistRepository boardPersistRepository;
+    private BoardNativeRepository boardNativeRepository;
 
     @Test
     public void save_test(){
         //given
         Board board = new Board("제목5", "내용 5", "ssar");
         //when
-        boardPersistRepository.save(board);
+        boardNativeRepository.save(board);
         System.out.println("save_test : " + board);
 
         //then
@@ -35,10 +35,10 @@ public class BoardNativeRepositoryTest {
         String username = "bori";
 
         //when
-        boardPersistRepository.updateById(id, title, content, username);
+        boardNativeRepository.updateById(id, title, content, username);
 
         //then
-        Board board = boardPersistRepository.findById(id);
+        Board board = boardNativeRepository.findById(id);
         System.out.println("updateById_test/board: " + board);
         assertThat(board.getTitle()).isEqualTo("제목수정1");
         assertThat(board.getContent()).isEqualTo("내용수정1");
@@ -50,7 +50,7 @@ public class BoardNativeRepositoryTest {
         //given
 
         //when
-        List<Board> boardList = boardPersistRepository.findAll();
+        List<Board> boardList = boardNativeRepository.findAll();
 
         //then
         System.out.println("findAll_test/size : " + boardList.size());
@@ -66,10 +66,10 @@ public class BoardNativeRepositoryTest {
         int id = 1;
 
         //when
-        boardPersistRepository.deleteById(id);
+        boardNativeRepository.deleteById(id);
 
         //then
-        List<Board> boardList = boardPersistRepository.findAll();
+        List<Board> boardList = boardNativeRepository.findAll();
         assertThat(boardList.size()).isEqualTo(3);
     }
 
@@ -79,7 +79,7 @@ public class BoardNativeRepositoryTest {
         int id = 1;
 
         //when
-        Board board = boardPersistRepository.findById(id);
+        Board board = boardNativeRepository.findById(id);
         //System.out.println("findById_test"+board);
 
         //then

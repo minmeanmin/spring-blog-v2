@@ -31,6 +31,13 @@ public class Board {
         this.username = username;
     }
 
+    public void update(BoardRequest.UpdateDTO requestDTO) {
+        this.title = requestDTO.getTitle();
+        this.content = requestDTO.getContent();
+        this.username = requestDTO.getUsername();
+    } // 객체지향 언어라서 이렇게 해주는게 좋다.
+
+
     public String getTime(){
         return MyDateUtil.timestampFormat(createdAt);
     }

@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,7 +16,22 @@ public class BoardPersistRepositoryTest {
 
     @Autowired // IOC에 있는걸 DI 해주는 역할
     private BoardPersistRepository boardPersistRepository;
-    private BoardNativeRepository boardNativeRepository;
+
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void updateById_test(){
+        //given
+        int id = 1;
+        String title = "제목 수정1";
+
+        //when
+        Board board = boardPersistRepository.findById(id); // board는 영속화된 상태
+        board.setTitle(title); // PC에 있는 값을 변경한 것
+        em.flush();
+
+    } // 더티 체킹
 
     @Test
     public void save_test(){
@@ -27,52 +43,6 @@ public class BoardPersistRepositoryTest {
 
         //then
     }
-    @Test
-    public void updateById_test(){
-        //given
-        int id = 1;
-        String title = "제목수정1";
-        String content = "내용수정1";
-        String username = "bori";
-
-        //when
-        boardPersistRepository.updateById(id, title, content, username);
-
-        //then
-        Board board = boardPersistRepository.findById(id);
-        System.out.println("updateById_test/board: " + board);
-        assertThat(board.getTitle()).isEqualTo("제목수정1");
-        assertThat(board.getContent()).isEqualTo("내용수정1");
-        assertThat(board.getUsername()).isEqualTo("bori");
-    }
-
-    @Test
-    public void finadAll_test(){
-        //given
-
-        //when
-        List<Board> boardList = boardPersistRepository.findAll();
-
-        //then
-        System.out.println("findAll_test/size : " + boardList.size());
-        System.out.println("findAll_test/username : " + boardList.get(2).getUsername());
-
-        //org.assertj.core.api
-        assertThat(boardList.size()).isEqualTo(4);
-        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
-    }
-    @Test
-    public void deleteById_test(){
-        //given
-        int id = 1;
-
-        //when
-        boardPersistRepository.deleteById(id);
-
-        //then
-        List<Board> boardList = boardPersistRepository.findAll();
-        assertThat(boardList.size()).isEqualTo(3);
-    }
 
     @Test
     public void findById_test(){
@@ -81,10 +51,34 @@ public class BoardPersistRepositoryTest {
 
         //when
         Board board = boardPersistRepository.findById(id);
+        em.clear(); //PC의 객체를 지우고, (트랜잭션 종료 시) 삭제 쿼리를 전송함.
+        boardPersistRepository.findById(id);
         //System.out.println("findById_test"+board);
 
         //then
         assertThat(board.getTitle()).isEqualTo("제목1");
         assertThat(board.getContent()).isEqualTo("내용1");
     }
+
+//    @Test
+//    public void deleteByIdv2_test(){
+//        //given
+//        int id = 1;
+//
+//        //when
+//        boardPersistRepository.deleteByIdv2(id); // 쿼리가 안 날라간다.(transaction이 종료되지 않아서)
+//
+//        // 이 라인 쿼리?
+//        em.flush(); // 버퍼에 있는 쿼리를 즉시 전송하는 역할
+//    }
+
+    @Test
+    public void deleteById_test(){
+        //given
+        int id = 1;
+
+        //when
+        boardPersistRepository.deleteById(id);
+    }
+
 }
