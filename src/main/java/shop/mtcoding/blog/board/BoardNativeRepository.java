@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
-public class BoardPersistRepository {
+public class BoardNativeRepository {
     private final EntityManager em;
 
     @Transactional
@@ -32,8 +32,8 @@ public class BoardPersistRepository {
     }
 
     public List<Board> findAll(){
-        Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
-        return query.getResultList();
+        Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
+        return (List<Board>) query.getResultList();
     }
 
     @Transactional

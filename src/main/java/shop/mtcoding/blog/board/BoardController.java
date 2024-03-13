@@ -43,10 +43,8 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-
         List<Board> boardList = boardPersistRepository.findAll();
         request.setAttribute("boardList", boardList); // request 가방을 들고 간다.
-
         return "index";
     }
 
@@ -54,6 +52,7 @@ public class BoardController {
     public String saveForm() {
         return "board/save-form";
     }
+
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {

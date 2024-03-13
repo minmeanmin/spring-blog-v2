@@ -11,11 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(BoardPersistRepository.class)
 @DataJpaTest
-public class BoardPersistRepositoryTest {
+public class BoardNativeRepositoryTest {
 
     @Autowired // IOC에 있는걸 DI 해주는 역할
     private BoardPersistRepository boardPersistRepository;
-    private BoardNativeRepository boardNativeRepository;
 
     @Test
     public void save_test(){
